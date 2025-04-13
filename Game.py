@@ -5,7 +5,6 @@ HEIGHT = 600
 TITLE = 'Maze Runner'
 
 player = Rect(750, 550, 15, 15)
-
 win = False
 score = 0
 current_level = 1
@@ -14,13 +13,14 @@ starting_position = Rect(750, 550, 15, 15)
 started = False
 
 walls_level_1 = [
+
     Rect(0, 0, 400, 10),  
-    Rect(450, 0, 350, 10), 
+    Rect(450, 0, 350, 10),
     Rect(0, 0, 10, 300),  
     Rect(0, 350, 10, 240),  
-    Rect(0, 590, 400, 10), 
-    Rect(450, 590, 350, 10), 
-    Rect(790, 0, 10, 200), 
+    Rect(0, 590, 400, 10),
+    Rect(450, 590, 350, 10),
+    Rect(790, 0, 10, 200),
     Rect(790, 250, 10, 300),  
     Rect(50, 50, 100, 10),
     Rect(50, 150, 10, 200),
@@ -76,9 +76,11 @@ walls_level_1 = [
     Rect(450, 0, 350, 10),
     Rect(0, 0, 10, 300),
     Rect(650, 300, 100, 10),
+
 ]
 
 walls_level_2 = [
+
     Rect(0, 0, 400, 10),
     Rect(450, 0, 350, 10),
     Rect(0, 0, 10, 300),
@@ -124,9 +126,9 @@ walls_level_2 = [
     Rect(500, 500, 10, 100),
     Rect(450, 550, 150, 10),
     Rect(350, 550, 10, 50),
-    Rect(0, 590, 400, 10), 
-    Rect(450, 590, 350, 10), 
-    Rect(790, 0, 10, 200), 
+    Rect(0, 590, 400, 10),
+    Rect(450, 590, 350, 10),
+    Rect(790, 0, 10, 200),
     Rect(790, 250, 10, 300),  
     Rect(50, 50, 100, 10),
     Rect(50, 150, 10, 200),
@@ -135,9 +137,9 @@ walls_level_2 = [
     Rect(100, 100, 200, 10),
     Rect(300, 100, 10, 200),
     Rect(150, 150, 100, 10),
-    Rect(0, 590, 400, 10), 
-    Rect(450, 590, 350, 10), 
-    Rect(790, 0, 10, 200), 
+    Rect(0, 590, 400, 10),
+    Rect(450, 590, 350, 10),
+    Rect(790, 0, 10, 200),
     Rect(790, 250, 10, 300),  
     Rect(50, 50, 100, 10),
     Rect(50, 150, 10, 200),
@@ -158,24 +160,28 @@ walls_level_2 = [
     Rect(350, 550, 10, 50),
     Rect(250, 500, 100, 10),
     Rect(150, 550, 100, 10),
+
 ]
 
 def draw():
+
     screen.clear()
 
     if not started:
-        screen.draw.text("Click to Start", center=(WIDTH // 2, HEIGHT // 2), fontsize=60, color="white")
+        screen.draw.text(f"Click to Start {'\n'}Hit a wall? Reset and lose a point.", center=(WIDTH // 2, HEIGHT // 2), fontsize=60, color="white")
+
     else:
         if current_level == 1:
             walls = walls_level_1
+            
         elif current_level == 2:
             walls = walls_level_2
-        
+       
         for wall in walls:
             screen.draw.filled_rect(wall, 'grey')
         screen.draw.filled_rect(player, 'red')
         screen.draw.text(f"Score: {score}", (10, 10), color="white", fontsize=30)
-        
+    
         if win:
             screen.draw.text("You Win!", center=(WIDTH // 2, HEIGHT // 2), fontsize=60, color="yellow")
 
@@ -185,36 +191,49 @@ def on_mouse_down(pos):
 
 def update():
     global win, score, current_level
+
     if started and not win:
+
         if keyboard.left:
             player.x -= 2
+
         if keyboard.right:
             player.x += 2
+
         if keyboard.up:
             player.y -= 2
+
         if keyboard.down:
             player.y += 2
 
         if current_level == 1:
             walls = walls_level_1
+
         elif current_level == 2:
             walls = walls_level_2
-        
+     
+
         for wall in walls:
+
             if player.colliderect(wall):
                 player.x = starting_position.x
                 player.y = starting_position.y
                 score -= 1
+                sounds.lose.play()
 
         if player.y < 0:
+
             if current_level == 1:
-                current_level = 2 
+                current_level = 2
                 player.x = starting_position.x
                 player.y = starting_position.y
                 score += 10
+
             else:
                 win = True
                 score += 10
                 sounds.win.play()
+
+
 
 pgzrun.go()
